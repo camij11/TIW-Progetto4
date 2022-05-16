@@ -29,9 +29,12 @@ public class GoToHomePage extends HttpServlet {
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 	
-	
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
     public GoToHomePage() {
         super();
+        // TODO Auto-generated constructor stub
     }
     
 	public void init() throws ServletException {
@@ -43,30 +46,40 @@ public class GoToHomePage extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utente utente = (Utente)request.getSession().getAttribute("user");
+		request.getSession().setMaxInactiveInterval(30);
 		DAO_Conto DaoConto = new DAO_Conto(connection);
 		List<Integer> ElencoConti;
-		try { 
-			ElencoConti = DaoConto.getContiUtente(utente.getUsername());
-			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile accedere ai conti associati all'utente corrente");
-				return;
-			}
-		if(ElencoConti.size()== 0) {
-			String path = "/WEB-INF/HomePage.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("NessunConto","Non è presente nessun conto associato a questo account");
-			templateEngine.process(path, ctx, response.getWriter());
-		} else {
-			String path = "/WEB-INF/HomePage.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("ListaConti", ElencoConti);
-			templateEngine.process(path, ctx, response.getWriter());
+		if(utente!=null) {
+			try { 
+				ElencoConti = DaoConto.getContiUtente(utente.getUsername());
+				} catch (SQLException e) {
+					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible");
+					return;
+				}
+			if(ElencoConti.size()== 0) {
+				String path = "/WEB-INF/HomePage.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("NessunConto","Non è presente nessun conto associato a questo account");
+				templateEngine.process(path, ctx, response.getWriter());
+			} else {
+				String path = "/WEB-INF/HomePage.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("ListaConti", ElencoConti);
+				templateEngine.process(path, ctx, response.getWriter());
+			}			
 		}
+		else {
+			String percorso = "/Logout";
+			getServletContext().getRequestDispatcher(percorso).forward(request, response);
+		}
+		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

@@ -20,6 +20,7 @@ import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 import it.polimi.TIW.progetto4.DAO.DAO_Trasferimento;
 import it.polimi.TIW.progetto4.beans.Conto;
 import it.polimi.TIW.progetto4.beans.Trasferimento;
+import it.polimi.TIW.progetto4.beans.Utente;
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
 import java.util.ArrayList;
@@ -52,39 +53,41 @@ public class SelezionaConto extends HttpServlet {
 		DAO_Conto DaoConto = new DAO_Conto(connection);
 		DAO_Trasferimento DaoTrasferimento = new DAO_Trasferimento(connection);
 		Conto conto;
-		try{
-			IDConto = Integer.parseInt(request.getParameter("conto"));
-		} catch(Exception e) {
-			String path = "/WEB-INF/HomePage.html";
+		Utente utente = (Utente)request.getSession().getAttribute("user");
+		if(utente!=null) {
+			try{
+				IDConto = Integer.parseInt(request.getParameter("conto"));
+			} catch(Exception e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Nessun conto selezionato");
+				return;
+			}
+			
+			try{
+				conto = DaoConto.getContoByID(IDConto);
+			} catch(Exception e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
+				return;
+			}
+			
+			ArrayList<Trasferimento> listaTrasferimenti = new ArrayList<>();
+			
+			try {
+				listaTrasferimenti = DaoTrasferimento.trovaTrasferimentiByIDConto(IDConto);
+			} catch(Exception e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
+				return;
+			}
+			
+			String percorso = "/WEB-INF/DettaglioConto.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("ErrorMsg","Nessun conto selezionato");
-			templateEngine.process(path, ctx, response.getWriter());
-			return;
+			ctx.setVariable("DettaglioConto", conto);
+			ctx.setVariable("Trasferimenti", listaTrasferimenti);
+			templateEngine.process(percorso, ctx, response.getWriter());
+		}else {
+			String percorso = "/Logout";
+			getServletContext().getRequestDispatcher(percorso).forward(request, response);
 		}
-		
-		try{
-			conto = DaoConto.getContoByID(IDConto);
-		} catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
-			return;
-		}
-		
-		ArrayList<Trasferimento> listaTrasferimenti = new ArrayList<>();
-		
-		try {
-			listaTrasferimenti = DaoTrasferimento.trovaTrasferimentiByIDConto(IDConto);
-		} catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile accedere ai dati del conto");
-			return;
-		}
-		
-		String percorso = "/WEB-INF/DettaglioConto.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("DettaglioConto", conto);
-		ctx.setVariable("Trasferimenti", listaTrasferimenti);
-		templateEngine.process(percorso, ctx, response.getWriter());
 		
 	}
 	
