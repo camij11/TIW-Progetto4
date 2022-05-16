@@ -18,9 +18,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
-/**
- * Servlet implementation class GoToRegisterPage
- */
 
 @WebServlet("/GoToRegisterPage")
 public class GoToRegisterPage extends HttpServlet {
@@ -38,20 +35,16 @@ public class GoToRegisterPage extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public GoToRegisterPage() {
         super();
     }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = "/WEB-INF/RegisterPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-	
 	
 	
 	public void destroy() {

@@ -55,7 +55,11 @@ public class SelezionaConto extends HttpServlet {
 		try{
 			IDConto = Integer.parseInt(request.getParameter("conto"));
 		} catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Nessun conto selezionato");
+			String path = "/WEB-INF/HomePage.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("ErrorMsg","Nessun conto selezionato");
+			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
 		
@@ -71,7 +75,7 @@ public class SelezionaConto extends HttpServlet {
 		try {
 			listaTrasferimenti = DaoTrasferimento.trovaTrasferimentiByIDConto(IDConto);
 		} catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile accedere ai dati del conto");
 			return;
 		}
 		

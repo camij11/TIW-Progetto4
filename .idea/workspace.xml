@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0cec7236-0a65-4940-9bf7-7ca724438100" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Conto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Conto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Trasferimento.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Trasferimento.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Utente.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/DAO/DAO_Utente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/beans/Trasferimento.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/beans/Trasferimento.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/CheckConto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/CheckConto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/CheckCredenziali.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/CheckCredenziali.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/GoToHomePage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/GoToHomePage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/GoToRegisterPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/GoToRegisterPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/RegistraUtente.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/it/polimi/TIW/progetto4/controller/RegistraUtente.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/DAO/DAO_Utente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/DAO/DAO_Utente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/CheckCredenziali.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/CheckCredenziali.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/GoToHomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/GoToHomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/GoToRegisterPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/GoToRegisterPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/RegistraUtente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/RegistraUtente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/SelezionaConto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/TIW/progetto4/controller/SelezionaConto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/HomePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/HomePage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/RegisterPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/RegisterPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="29F5yCIm2ILoB4f3GWlqZcuFBEX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0cec7236-0a65-4940-9bf7-7ca724438100" name="Changes" comment="" />
+      <created>1652696245027</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652696245027</updated>
+      <workItem from="1652696246323" duration="85000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

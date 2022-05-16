@@ -2,20 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Banca TIW: accedi o iscriviti</title>
+<title>Banca TIW: accedi o registrati</title>
 </head>
 <body>
 <p th:text=" ${successMsg}"></p>
 	<h2>Benvenuto nella pagina di login di TIW banca</h2>
 	<form action="CheckCredenziali" method="post">
-	   Username: <input type="text" name="username" required/> <br>
+	   Username: <input type="email" name="username" required/> <br>
 	   Password: <input type="password" name="password" required/> <br>
 	   <input type="submit" value="accedi"/>
-	   <p th:text=" ${errorMsg}"></p>
+	   <p th:text=" ${errorMsg1}"></p>
  	</form>
- 	<form action="GoToRegisterPage" method="post">
- 	Sei un nuovo utente? <input type="submit" value="registrati qui"/>
- 	<p th:text=" ${errorMsg}"></p>
+ 	<form action= "GoToRegisterPage" method="get">
+ 	   Sei un nuovo utente? <input type="submit" value="registrati qui"/>
  	</form>
 </body>
 </html>

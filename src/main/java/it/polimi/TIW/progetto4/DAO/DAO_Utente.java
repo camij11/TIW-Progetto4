@@ -1,5 +1,6 @@
 package it.polimi.TIW.progetto4.DAO;
 import it.polimi.TIW.progetto4.beans.Utente;
+import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,19 +50,33 @@ public class DAO_Utente {
 	
 	public Utente registraUtente(String username,String password,String name,String surname) throws SQLException {
 		String query = "INSERT INTO Utente VALUES(?,?,?,?)";
+		DAO_Conto DaoConto = new DAO_Conto(connessione);
+		connessione.setAutoCommit(false);
 		try(PreparedStatement statement = connessione.prepareStatement(query);) {
 			statement.setString(1, username);
 			statement.setString(2, password);
 			statement.setString(3, name);
 			statement.setString(4, surname);
-			if(statement.executeUpdate() == 1) {	
+			if(statement.executeUpdate() == 1) {
 			    Utente utente = new Utente();
 				utente.setNome(name);
 			    utente.setCognome(surname);
 				utente.setPassword(password);
 				utente.setUsername(username);
+				try {
+					DaoConto.addContoDefault(username);
+					connessione.commit();
+				} catch(SQLException e){
+					connessione.rollback();
+					throw e;
+				} finally {
+					connessione.setAutoCommit(true);
+				}
 				return utente;
-			} else return null;
+			} else {
+				connessione.setAutoCommit(true);
+				return null;
+			}
 		}
 	}
 }
