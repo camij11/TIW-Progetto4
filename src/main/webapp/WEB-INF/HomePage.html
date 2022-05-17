@@ -9,7 +9,7 @@
 <p th:text=" ${NessunConto}"></p>
 
 <form action="SelezionaConto" method="post">
-<select name="conto" size="${ListaConti}.size" multiple>
+<select name="conto" th:size="${NumeroConti}" multiple>
 <option th:each=" conto: ${ListaConti}" th:value="${conto}" th:label="'IDConto: '+ ${conto}" >
 </option>
 </select>

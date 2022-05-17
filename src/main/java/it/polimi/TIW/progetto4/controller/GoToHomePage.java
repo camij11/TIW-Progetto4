@@ -72,6 +72,7 @@ public class GoToHomePage extends HttpServlet {
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 				ctx.setVariable("ListaConti", ElencoConti);
+				ctx.setVariable("NumeroConti", ElencoConti.size());
 				templateEngine.process(path, ctx, response.getWriter());
 			}			
 		}
