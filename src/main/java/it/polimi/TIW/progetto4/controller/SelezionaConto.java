@@ -63,7 +63,12 @@ public class SelezionaConto extends HttpServlet {
 			}
 			
 			try{
-				conto = DaoConto.getContoByID(IDConto);
+				if(DaoConto.checkProprietà(IDConto, utente.getUsername())!= null) {
+					conto = DaoConto.getContoByID(IDConto);
+				}
+				else {
+					throw new Exception("Utente in sessione non è proprietario del conto selezionato");
+				}
 			} catch(Exception e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
 				return;

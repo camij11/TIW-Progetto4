@@ -119,6 +119,7 @@ public class CheckConto extends HttpServlet {
 			if(contoOrigine!= null && contoDestinazione !=null && contoOrigine.getSaldo()>=importo) {
 				percorso = "/EseguiTransazione";
 				getServletContext().getRequestDispatcher(percorso).forward(request, response);
+				
 			} 
 			else {
 				ServletContext servletContext = getServletContext();

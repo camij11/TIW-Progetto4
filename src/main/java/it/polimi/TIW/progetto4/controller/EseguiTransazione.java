@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -53,7 +54,7 @@ public class EseguiTransazione extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append("by the get");
+		doPost(request,response);
 	}
 
 	/**
@@ -101,15 +102,13 @@ public class EseguiTransazione extends HttpServlet {
 		
 		String percorso;
 		if(risultato == 1) {
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Tutto ok");
-			ctx.setVariable("ContoOriginePrima", contoOriginePrima);
-			ctx.setVariable("ContoOrigineDopo", contoOrigineDopo);
-			ctx.setVariable("ContoDestinazionePrima", contoDestinazionePrima);
-			ctx.setVariable("ContoDestinazioneDopo", contoDestinazioneDopo);
-			percorso = "/WEB-INF/Successo.html";
-			templateEngine.process(percorso, ctx, response.getWriter());
+			percorso = getServletContext().getContextPath() + "/GoToSuccessPage";
+			HttpSession sessione = request.getSession(false);
+			sessione.setAttribute("ContoOriginePrima", contoOriginePrima);
+			sessione.setAttribute("ContoOrigineDopo", contoOrigineDopo);
+			sessione.setAttribute("ContoDestinazionePrima", contoDestinazionePrima);
+			sessione.setAttribute("ContoDestinazioneDopo", contoDestinazioneDopo);
+			response.sendRedirect(percorso);
 		} 
 		else {
 			ServletContext servletContext = getServletContext();
