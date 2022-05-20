@@ -17,24 +17,16 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
-/**
- * Servlet implementation class Logout
- */
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Connection connessione;
 	private TemplateEngine templateEngine;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public Logout() {
         super();
     }
     
     public void init() throws ServletException {
-		connessione = ConnectionHandler.getConnection(getServletContext());
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -43,9 +35,6 @@ public class Logout extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().invalidate();
 		String path = "/index.html";

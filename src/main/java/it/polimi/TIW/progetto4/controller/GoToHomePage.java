@@ -28,13 +28,9 @@ public class GoToHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public GoToHomePage() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
 	public void init() throws ServletException {
@@ -46,19 +42,17 @@ public class GoToHomePage extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 	}
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utente utente = (Utente)request.getSession().getAttribute("user");
-		request.getSession().setMaxInactiveInterval(30);
+		//request.getSession().setMaxInactiveInterval(30);
 		DAO_Conto DaoConto = new DAO_Conto(connection);
 		List<Integer> ElencoConti;
 		if(utente!=null) {
 			try { 
 				ElencoConti = DaoConto.getContiUtente(utente.getUsername());
 				} catch (SQLException e) {
-					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible");
+					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile accedere ai conti dell'utente");
 					return;
 				}
 			if(ElencoConti.size()== 0) {

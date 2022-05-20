@@ -24,18 +24,11 @@ import it.polimi.TIW.progetto4.util.ConnectionHandler;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-/**
- * Servlet implementation class RegistraUtente
- */
 @WebServlet("/RegistraUtente")
 public class RegistraUtente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
 	
     public RegistraUtente() {
         super();
@@ -66,27 +59,27 @@ public class RegistraUtente extends HttpServlet {
 		repeatpassword = request.getParameter("repeatpassword");
 		
 		if(name == null || surname == null || username == null || password == null || repeatpassword == null || name.isEmpty() || surname.isEmpty() || username.isEmpty() || password.isEmpty() || repeatpassword.isEmpty()) {
-			throw new Exception("Missing or empty credential value");
+			throw new Exception("I campi username e password devono essere riempiti");
 		}
 		
 		if(!password.equals(repeatpassword)) { 
-			throw new Exception("password e repeatpassword non corrispondono");
+			throw new Exception("I campi password e repeatpassword non corrispondono");
 		}
 		
 		Pattern p = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = p.matcher(username);
 		if(!matcher.find()) {
-			throw new Exception("Invalid mail address");
+			throw new Exception("Il campo username deve essere un indirizzo email");
 			}
 		
 		if(password.length()>20) {
-			throw new Exception("Password too long (max 20 characters)");
+			throw new Exception("La password non può essere più lunga di 20 caratteri");
 		}
 	}
 
 	  catch (Exception e) {
 		// for debugging only e.printStackTrace();
-		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Wrong credential value");
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Valori delle credenziali errate");
 		return;
 	  }	
 	

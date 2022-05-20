@@ -58,7 +58,7 @@ public class SelezionaConto extends HttpServlet {
 			try{
 				IDConto = Integer.parseInt(request.getParameter("conto"));
 			} catch(Exception e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Nessun conto selezionato");
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nessun conto selezionato");
 				return;
 			}
 			
@@ -79,16 +79,25 @@ public class SelezionaConto extends HttpServlet {
 			try {
 				listaTrasferimenti = DaoTrasferimento.trovaTrasferimentiByIDConto(IDConto);
 			} catch(Exception e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile accedere ai dati del conto");
 				return;
 			}
 			
-			String percorso = "/WEB-INF/DettaglioConto.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("DettaglioConto", conto);
-			ctx.setVariable("Trasferimenti", listaTrasferimenti);
-			templateEngine.process(percorso, ctx, response.getWriter());
+			String percorso;
+			if(conto != null) {
+				percorso = "/WEB-INF/DettaglioConto.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("DettaglioConto", conto);
+				ctx.setVariable("Trasferimenti", listaTrasferimenti);
+				templateEngine.process(percorso, ctx, response.getWriter());
+			} else {
+				percorso = "/WEB-INF/HomePage.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("ErrorMsg", "Conto inesistente");
+				templateEngine.process(percorso, ctx, response.getWriter());
+			}
 		}else {
 			String percorso = "/Logout";
 			getServletContext().getRequestDispatcher(percorso).forward(request, response);

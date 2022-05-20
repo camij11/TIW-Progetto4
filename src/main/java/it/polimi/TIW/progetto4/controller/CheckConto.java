@@ -22,18 +22,13 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import it.polimi.TIW.progetto4.beans.*;
 import it.polimi.TIW.progetto4.DAO.*;
 import it.polimi.TIW.progetto4.util.*;
-/**
- * Servlet implementation class CheckConto
- */
+
 @WebServlet("/CheckConto")
 public class CheckConto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public CheckConto() {
         super();
     }
@@ -48,9 +43,6 @@ public class CheckConto extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String usernameDestinatario;
@@ -71,7 +63,7 @@ public class CheckConto extends HttpServlet {
 				Pattern p = Pattern.compile("^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$", Pattern.CASE_INSENSITIVE);
 		        Matcher matcher = p.matcher(usernameDestinatario);
 				if(!matcher.find()) {
-					throw new Exception("Invalid mail address");
+					throw new Exception("Indirizzo email non valido");
 				}
 				
 				if (usernameDestinatario == null || usernameDestinatario.isEmpty()) {
@@ -95,7 +87,7 @@ public class CheckConto extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Qualcosa è andato storto nel trasferimento");
 				return;
 				
-			}
+			}			
 			
 			DAO_Conto DAOConto = new DAO_Conto(connection);
 			Conto contoDestinazione = null;

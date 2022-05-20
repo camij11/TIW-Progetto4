@@ -28,10 +28,6 @@ public class CheckCredenziali extends HttpServlet {
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
 
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public CheckCredenziali() {
         super();
     }
@@ -46,9 +42,6 @@ public class CheckCredenziali extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String username = null;
@@ -61,16 +54,16 @@ public class CheckCredenziali extends HttpServlet {
 			password = request.getParameter("password");
 			
 			if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-				throw new Exception("Missing or empty credential value");
+				throw new Exception("I campi username e password devono essere riempiti");
 			}
 			
 			if(password.length()>20) {
-				throw new Exception("Password too long (max 20 characters)");
+				throw new Exception("La password inserita è troppo lunga (max 20 caratteri)");
 			}
 
 		} catch (Exception e) {
 			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Credenziali mancanti");
 			return;
 		}
 		
@@ -79,7 +72,7 @@ public class CheckCredenziali extends HttpServlet {
 		try {
 			utente = DaoUtente.checkCredenziali(username, password);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to check credentials");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Non è stato possible verificare le credenziali");
 			return;
 		}
 		String percorso;
@@ -91,7 +84,7 @@ public class CheckCredenziali extends HttpServlet {
 		else {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Incorrect username or password");
+			ctx.setVariable("errorMsg", "Username o password errati");
 			percorso = "/index.html";
 			templateEngine.process(percorso, ctx, response.getWriter());
 		}

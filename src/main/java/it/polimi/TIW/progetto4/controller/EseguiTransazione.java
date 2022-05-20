@@ -22,21 +22,14 @@ import it.polimi.TIW.progetto4.DAO.DAO_Trasferimento;
 import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 import it.polimi.TIW.progetto4.beans.Conto;
 
-/**
- * Servlet implementation class EseguiTransazione
- */
 @WebServlet("/EseguiTransazione")
 public class EseguiTransazione extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public EseguiTransazione() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     public void init() throws ServletException {
@@ -49,19 +42,7 @@ public class EseguiTransazione extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doPost(request,response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		DAO_Trasferimento DAOTrasferimento = new DAO_Trasferimento(connection);
 		DAO_Conto DAOConto = new DAO_Conto(connection);
 		Conto contoOriginePrima, contoOrigineDopo, contoDestinazionePrima, contoDestinazioneDopo;
@@ -72,7 +53,7 @@ public class EseguiTransazione extends HttpServlet {
 			contoOriginePrima = DAOConto.getContoByID(IDContoOrigine);
 			contoDestinazionePrima = DAOConto.getContoByID(IDContoDestinazione);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti prima della transazione");
 			return;
 		}
@@ -80,13 +61,8 @@ public class EseguiTransazione extends HttpServlet {
 		String causale = request.getParameter("causale");
 		try {
 			risultato = DAOTrasferimento.eseguiTransazione(IDContoOrigine, IDContoDestinazione, importo, causale); 
-			if (risultato == 1) {
-				System.out.println("Transazione andata a buon fine");
-			} else {
-				System.out.println("Impossibile eseguire la transazione");
-			}
 		} catch(SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare la proprietà del conto");
 			return;
 		}
@@ -95,7 +71,7 @@ public class EseguiTransazione extends HttpServlet {
 			contoOrigineDopo = DAOConto.getContoByID(IDContoOrigine);
 			contoDestinazioneDopo = DAOConto.getContoByID(IDContoDestinazione);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti dopo la transazione");
 			return;
 		}
@@ -113,7 +89,7 @@ public class EseguiTransazione extends HttpServlet {
 		else {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Nope");
+			ctx.setVariable("errorMsg", "L'esecuzione dell'operazione non è andata a buon fine");
 			percorso = "/WEB-INF/Fallimento.html";
 			templateEngine.process(percorso, ctx, response.getWriter());
 		}
