@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+body{
+    background-image: url("../immagini/B33_generated.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-top: -10px;
+    font-family: 'Raleway', sans-serif;
+}
+
+input {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.a{
+	top: 5%;
+    right: 5%;
+	position: absolute;
+    background-color: #ffddcc;
+    color: #331100;
+	text-emphasis: none;
+	text-decoration: none;
+}
+
+.elencoConti{
+    position: absolute;
+    left: 15%;
+    vertical-align: middle;
+    width: 60%;
+}
+
+.form{
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.divBottone{
+    color: #331100;
+    margin-top: 3%;
+}
+
+.bottone{
+    background-color: #ffddcc;
+    color: #331100;
+}

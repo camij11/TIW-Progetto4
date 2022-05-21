@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-<link rel="stylesheet" href="CSS/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="CSS/preHome.css">
 <meta charset="UTF-8">
 <title>Banca TIW: accedi o registrati</title>
 </head>
@@ -10,16 +12,18 @@
 <div>
 <p th:text=" ${successMsg}"></p>
 </div>
-<div class="form">
+<div class="form border">
 	<h2>Benvenuto nella pagina di login di TIW banca</h2>
 	<form action="CheckCredenziali" method="post">
+	<div class="allineamentoDestra">
 	   Username: <input type="email" name="username" required/> <br>
 	   Password: <input type="password" name="password" required/> <br>
+	</div>
 	   <input type="submit" value="accedi"/>
 	   <p th:text=" ${errorMsg1}"></p>
  	</form>
  </div>
- <div id="registrazione">
+ <div id="registrazione" class="border">
  	<form action= "GoToRegisterPage" method="get">
  	   Sei un nuovo utente? <input type="submit" value="registrati qui"/>
  	</form>

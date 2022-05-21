@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="../CSS/preHome.css" th:href="@{/CSS/preHome.css}">
 <meta charset="UTF-8">
 <title>Registrati</title>
 </head>
 <body>
+<div class="form border">
 	<p th:text=" ${errorMsg}"></p>
 	<h2>Benvenuto nella pagina di registrazione</h2>
+	
 	<form action="RegistraUtente" method="post">
+	<div class="allineamentoDestra">
 	   Nome: <input type="text" name="name" required/> <br>
 	   Cognome: <input type="text" name="surname" required/> <br>
 	   Username: <input type="text" name="username" required/> <br>
 	   Password: <input type="text" name="password" required/> <br>
 	   Ripeti password: <input type="text" name="repeatpassword" required/> <br>
+	</div>
 	   <input type="submit" value="registrati"/>
  	</form>
- 	
- 	<a href="index.html">Ritorna alla pagina precedente</a>
+</div>
+<div class="a">
+	<a href="index.html" >Ritorna alla pagina precedente</a>
+</div>
 </body>
 </html>

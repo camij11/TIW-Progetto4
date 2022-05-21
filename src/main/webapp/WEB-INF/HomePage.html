@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="../CSS/home.css" th:href="@{/CSS/home.css}">
 <meta charset="UTF-8">
 <title>HomePage Banca</title>
 </head>
-<body> 
+<body>
+<div class="elencoConti">
 <h2> Elenco Conti</h2>
+
+
 <p th:text=" ${NessunConto}"></p>
 
 <form action="SelezionaConto" method="post">
+<div class="form">
 <select name="conto" th:size="${NumeroConti}">
 <option th:each=" conto: ${ListaConti}" th:value="${conto}" th:label="'IDConto: '+ ${conto}" >
 </option>
 </select>
-<input type= "submit" value= "Visualizza dettagli conto selezionato" >
+</div>
+<div class="divBottone">
+<input class ="bottone" type= "submit" value= "Visualizza dettagli conto selezionato" >
+</div>
 </form>
+</div>
 <p th:text=" ${ErrorMsg}"></p>
-<div>
-<p><a href="/TrasferimentoDenaroGruppo94/Logout">Logout</a></p>
+<div class="a">
+<a href="/TrasferimentoDenaroGruppo94/Logout">Logout</a>
 </div>
 </body>
 </html>
