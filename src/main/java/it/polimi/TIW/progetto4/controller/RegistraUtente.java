@@ -78,8 +78,11 @@ public class RegistraUtente extends HttpServlet {
 	}
 
 	  catch (Exception e) {
-		// for debugging only e.printStackTrace();
-		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Valori delle credenziali errate");
+	    ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("errorMsg", e.getMessage());
+		String percorso = "/WEB-INF/RegisterPage";
+		templateEngine.process(percorso, ctx, response.getWriter());
 		return;
 	  }	
 	

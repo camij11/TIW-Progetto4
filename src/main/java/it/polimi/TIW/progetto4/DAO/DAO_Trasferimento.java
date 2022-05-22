@@ -64,7 +64,7 @@ public class DAO_Trasferimento {
 		return risultato;
 	}
 	
-	public int eseguiTransazione(int IDContoOrigine, int IDContoDestinazione, int importo, String causale) throws SQLException {
+	public int eseguiTransazione(int IDContoOrigine, int IDContoDestinazione, int importo, String causale) throws SQLException, Exception {
 		int risultato = 0;
 		String query = "INSERT INTO Trasferimento(Data, Importo, Causale, IDContoOrigine, IDContoDestinazione) VALUES(?, ?, ?, ?, ?)";
 		
@@ -85,12 +85,18 @@ public class DAO_Trasferimento {
 			Conto ContoOrigine = DAOConto.getContoByID(IDContoOrigine);
 			int importoOriginePrima = ContoOrigine.getSaldo();
 			ContoOrigine.setSaldo(importoOriginePrima - importo);
-			DAOConto.updateConto(ContoOrigine);
+			if(DAOConto.updateConto(ContoOrigine)==0) {
+				connessione.rollback();
+				throw new Exception("Impossibile eseguire la transazione");
+			}
 			
 			Conto ContoDestinazione = DAOConto.getContoByID(IDContoDestinazione);
 			int importoDestinazioneDopo = ContoDestinazione.getSaldo();
 			ContoDestinazione.setSaldo(importoDestinazioneDopo + importo);
-			DAOConto.updateConto(ContoDestinazione);
+			if(DAOConto.updateConto(ContoDestinazione)==0) {
+				connessione.rollback();
+				throw new Exception("Impossibile eseguire la transazione");
+			}
 			
 			connessione.commit();
 			

@@ -65,6 +65,9 @@ public class EseguiTransazione extends HttpServlet {
 			//e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare la proprietà del conto");
 			return;
+		} catch(Exception e1) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile eseguire la transazione");
+			return;
 		}
 		
 		try {

@@ -100,9 +100,9 @@ public class CheckConto extends HttpServlet {
 				return;
 			}
 			try {
-				contoOrigine = DAOConto.checkSaldo(IDContoOrigine);
+				contoOrigine = DAOConto.checkProprietà(IDContoOrigine, utente.getUsername());
 			} catch (SQLException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare il saldo del conto");
 				return;
 			}

@@ -25,9 +25,6 @@ import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
 import java.util.ArrayList;
 
-/**
- * Servlet implementation class SelezionaConto
- */
 @WebServlet("/SelezionaConto")
 public class SelezionaConto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
