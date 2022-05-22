@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="../CSS/home.css" th:href="@{/CSS/home.css}">
 <meta charset="UTF-8">
-<title>LET'S GO</title>
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1990 12:00:00 GMT" />
+<title>Successo transazione</title>
 </head>
 <body>
-	<h1>All gucci man</h1>
-
+<div class="esito">
+	<h2>Transazione avvenuta con successo</h2>
+    <div id = "pre">
 	<p>Conto origine allo stato precedente:</p>
 	<p th:text=" ${ContoOriginePrima.IDConto}"></p>
 	<p th:text=" ${ContoOriginePrima.saldo}"></p>
@@ -15,7 +24,8 @@
 	<p th:text=" ${ContoDestinazionePrima.IDConto}"></p>
 	<p th:text=" ${ContoDestinazionePrima.saldo}"></p>
 	<p th:text=" ${ContoDestinazionePrima.proprietario}"></p>
-	<br />
+	</div>
+	<div id = "succ">
 	<p>Conto origine allo stato successivo:</p>
 	<p th:text=" ${ContoOrigineDopo.IDConto}"></p>
 	<p th:text=" ${ContoOrigineDopo.saldo}"></p>
@@ -24,13 +34,14 @@
 	<p th:text=" ${ContoDestinazioneDopo.IDConto}"></p>
 	<p th:text=" ${ContoDestinazioneDopo.saldo}"></p>
 	<p th:text=" ${ContoDestinazioneDopo.proprietario}"></p>
-	
+	</div>
+	</div>
 	<div>
-		<p><a href="/TrasferimentoDenaroGruppo94/Logout">Logout</a></p>
-		<p><a href="/TrasferimentoDenaroGruppo94/GoToHomePage">Home Page</a></p>
+		<a class= "logout" href="/TrasferimentoDenaroGruppo94/Logout">Logout</a>
+		<a class= "gotohome" href= "/TrasferimentoDenaroGruppo94/GoToHomePage">Home Page</a>
 		<form action="SelezionaConto" method="post">
 			<input type="hidden" th:value="${ContoOrigineDopo.IDConto}" name="conto"/>
-			<input type="submit" value="Ritorna alla pagina precedente" />
+			<input class = "back" type="submit" value="Ritorna alla pagina precedente" />
 		</form>
 	</div>
 </body>

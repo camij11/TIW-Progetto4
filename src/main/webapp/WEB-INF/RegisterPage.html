@@ -10,7 +10,6 @@
 </head>
 <body>
 <div class="form border">
-	<p th:text=" ${errorMsg}"></p>
 	<h2>Benvenuto nella pagina di registrazione</h2>
 	
 	<form action="RegistraUtente" method="post">
@@ -22,6 +21,7 @@
 	   Ripeti password: <input type="text" name="repeatpassword" required/> <br>
 	</div>
 	   <input type="submit" value="registrati"/>
+	   	<p th:text=" ${errorMsg}"></p>
  	</form>
 </div>
 <div class="a">

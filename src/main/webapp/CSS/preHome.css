@@ -1,9 +1,8 @@
 @charset "UTF-8";
 
 body{
-	background-image: url("../immagini/B24_generated.jpg");
-	background-size: 120%;
-	background-position: -2cm;
+	background-image: url("../immagini/sfondo1.jpg");
+	background-size: cover;
 	font-family: 'Raleway', sans-serif;
 }
 
@@ -29,7 +28,7 @@ input {
 }
 
 #registrazione{
-	background-color: #fffffe;
+	background-color: #ffffff;
 	margin: 0 auto;
 	margin-top:5%;
 	padding:3mm;
@@ -42,7 +41,7 @@ input {
 .a{
 	bottom: 5%;
 	position: absolute;
-	left: 40%;
+	left: 42%;
 }
 
 .allineamentoDestra{
@@ -50,8 +49,16 @@ input {
 	margin-right: 30%;
 }
 
-a {
+a{
 	color: #331100;
 	text-emphasis: none;
 	text-decoration: none;
+}
+
+#scsmsg{
+	color: #331100;
+	position: absolute;
+	top: 5%;
+	left: 50%;
+	transform:translate(-50%,-50%);
 }
