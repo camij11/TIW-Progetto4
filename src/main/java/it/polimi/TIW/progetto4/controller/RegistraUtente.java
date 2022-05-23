@@ -16,7 +16,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 import it.polimi.TIW.progetto4.DAO.DAO_Utente;
 import it.polimi.TIW.progetto4.beans.Utente;
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
@@ -88,7 +87,6 @@ public class RegistraUtente extends HttpServlet {
 	  }	
 	
 	DAO_Utente DaoUtente = new DAO_Utente(connection);
-	DAO_Conto DaoConto = new DAO_Conto(connection);
 	Utente utente = null;
 	String usernameEsistente = null;
 	try{

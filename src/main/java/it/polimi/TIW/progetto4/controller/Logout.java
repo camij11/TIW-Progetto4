@@ -1,7 +1,6 @@
 package it.polimi.TIW.progetto4.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -14,8 +13,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {

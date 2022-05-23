@@ -19,7 +19,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.TIW.progetto4.beans.*;
 import it.polimi.TIW.progetto4.DAO.*;
-import it.polimi.TIW.progetto4.util.*;
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
 @WebServlet("/CheckCredenziali")

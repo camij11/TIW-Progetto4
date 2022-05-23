@@ -19,7 +19,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 import it.polimi.TIW.progetto4.beans.Utente;
-import it.polimi.TIW.progetto4.beans.Conto;
 
 import it.polimi.TIW.progetto4.util.ConnectionHandler;
 

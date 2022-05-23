@@ -1,9 +1,6 @@
 package it.polimi.TIW.progetto4.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,10 +15,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.TIW.progetto4.DAO.DAO_Conto;
 import it.polimi.TIW.progetto4.beans.Conto;
-import it.polimi.TIW.progetto4.beans.Utente;
-import it.polimi.TIW.progetto4.util.ConnectionHandler;
 
 @WebServlet("/GoToSuccessPage")
 public class GoToSuccessPage extends HttpServlet {

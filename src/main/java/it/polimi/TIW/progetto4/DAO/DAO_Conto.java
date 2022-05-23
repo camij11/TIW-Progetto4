@@ -1,6 +1,5 @@
 package it.polimi.TIW.progetto4.DAO;
 import it.polimi.TIW.progetto4.beans.Conto;
-import it.polimi.TIW.progetto4.beans.Utente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
