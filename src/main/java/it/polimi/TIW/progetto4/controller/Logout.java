@@ -36,12 +36,20 @@ public class Logout extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().invalidate();
-		String path = "index.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("successMsg", "Logout effettuato");
-		templateEngine.process(path, ctx, response.getWriter());
+		if(request.getSession().getAttribute("user") == null) {
+			String path = "index.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("successMsg", "Sessione scaduta");
+			templateEngine.process(path, ctx, response.getWriter());
+		} else {
+			request.getSession().invalidate();
+			String path = "index.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("successMsg", "Logout effettuato");
+			templateEngine.process(path, ctx, response.getWriter());
+		}
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

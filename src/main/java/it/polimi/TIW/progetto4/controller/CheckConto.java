@@ -49,16 +49,17 @@ public class CheckConto extends HttpServlet {
 		int IDContoDestinazione;
 		String causale;
 		int importo;
-		int IDContoOrigine;
+		int IDContoOrigine = 0;
+		String percorso;
 		
 		Utente utente = (Utente)request.getSession().getAttribute("user");
 		if(utente!=null) {
 			try {
+				IDContoOrigine = Integer.parseInt(request.getParameter("IDContoOrigine"));
 				usernameDestinatario = request.getParameter("usernameDestinatario");
 				IDContoDestinazione = Integer.parseInt(request.getParameter("IDContoDestinazione"));
 				causale = request.getParameter("causale");
 				importo = Integer.parseInt(request.getParameter("importo"));
-				IDContoOrigine = Integer.parseInt(request.getParameter("IDContoOrigine"));
 				
 				Pattern p = Pattern.compile("^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)$", Pattern.CASE_INSENSITIVE);
 		        Matcher matcher = p.matcher(usernameDestinatario);
@@ -71,7 +72,7 @@ public class CheckConto extends HttpServlet {
 				}
 				
 				if (causale == null || causale.isEmpty()) {
-					throw new Exception("Causale nullo o vuoto");
+					throw new Exception("Causale nulla o vuota");
 				}
 				
 				if (importo <= 0) {
@@ -82,12 +83,23 @@ public class CheckConto extends HttpServlet {
 					throw new Exception("Conto di origine uguale a conto di destinazione");
 				}
 				
-			} catch (Exception e) {
-				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Qualcosa è andato storto nel trasferimento");
+			} catch(NumberFormatException e) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Campi inseriti non validi");
 				return;
-				
-			}			
+			} catch (Exception e) {
+				if(IDContoOrigine !=0) {
+					ServletContext servletContext = getServletContext();
+					final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+					ctx.setVariable("errorMsg", e.getMessage());
+					ctx.setVariable("IDConto", IDContoOrigine);
+					percorso = "/WEB-INF/Fallimento.html";
+					templateEngine.process(percorso, ctx, response.getWriter());
+					return;
+				} else {
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Conto di origine errato");
+					return;
+				}
+			}
 			
 			DAO_Conto DAOConto = new DAO_Conto(connection);
 			Conto contoDestinazione = null;
@@ -95,37 +107,49 @@ public class CheckConto extends HttpServlet {
 			try {
 				contoDestinazione = DAOConto.checkProprietà(IDContoDestinazione, usernameDestinatario);
 			} catch (SQLException e) {
-				e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare la proprietà del conto");
 				return;
 			}
 			try {
 				contoOrigine = DAOConto.checkProprietà(IDContoOrigine, utente.getUsername());
 			} catch (SQLException e) {
-				//e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare il saldo del conto");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare la proprietà del conto");
 				return;
 			}
 			
-			String percorso;
 			if(contoOrigine!= null && contoDestinazione !=null && contoOrigine.getSaldo()>=importo) {
 				percorso = "/EseguiTransazione";
 				getServletContext().getRequestDispatcher(percorso).forward(request, response);
 				
 			} 
-			else {
+			else if(contoOrigine== null || contoDestinazione ==null) {
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("errorMsg", "Conto di origine o conto di destinazione inesistente oppure importo maggiore del saldo del conto d'origine");
+				ctx.setVariable("errorMsg", "Conto di origine o conto di destinazione inesistente");
+				ctx.setVariable("IDConto", IDContoOrigine);
+				percorso = "/WEB-INF/Fallimento.html";
+				templateEngine.process(percorso, ctx, response.getWriter());
+			} else {
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+				ctx.setVariable("errorMsg", "Importo maggiore del saldo disponibile");
 				ctx.setVariable("IDConto", IDContoOrigine);
 				percorso = "/WEB-INF/Fallimento.html";
 				templateEngine.process(percorso, ctx, response.getWriter());
 			}
 		} else {
-			String percorso = "/Logout";
+			percorso = "/Logout";
 			getServletContext().getRequestDispatcher(percorso).forward(request, response);
 		}
 		
+	}
+	
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

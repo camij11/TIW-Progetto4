@@ -51,7 +51,7 @@ public class DAO_Utente {
 	public Utente registraUtente(String username,String password,String name,String surname) throws SQLException {
 		String query = "INSERT INTO Utente VALUES(?,?,?,?)";
 		DAO_Conto DaoConto = new DAO_Conto(connessione);
-		connessione.setAutoCommit(false);
+		connessione.setAutoCommit(false); 
 		try(PreparedStatement statement = connessione.prepareStatement(query);) {
 			statement.setString(1, username);
 			statement.setString(2, password);
@@ -63,11 +63,16 @@ public class DAO_Utente {
 			    utente.setCognome(surname);
 				utente.setPassword(password);
 				utente.setUsername(username);
-				try {
-					DaoConto.addContoDefault(username);
+				try { int res = DaoConto.addContoDefault(username);
+				if(res == 1) {
 					connessione.commit();
+				} else {
+					connessione.rollback();
+					utente = null;
+				}
 				} catch(SQLException e){
 					connessione.rollback();
+					utente = null;
 					throw e;
 				} finally {
 					connessione.setAutoCommit(true);

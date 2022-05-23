@@ -46,9 +46,8 @@ public class CheckCredenziali extends HttpServlet {
 		
 		String username = null;
 		String password = null;
-		
-	//	StringEscapeUtils.escapeJava
-		
+		String percorso = null;
+
 		try {
 			username = request.getParameter("username");
 			password = request.getParameter("password");
@@ -58,12 +57,15 @@ public class CheckCredenziali extends HttpServlet {
 			}
 			
 			if(password.length()>20) {
-				throw new Exception("La password inserita è troppo lunga (max 20 caratteri)");
+				throw new Exception("La password inserita risulta troppo lunga");
 			}
 
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Credenziali mancanti");
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("errorMsg1",e.getMessage());
+			percorso = "/index.html";
+			templateEngine.process(percorso, ctx, response.getWriter());
 			return;
 		}
 		
@@ -75,16 +77,15 @@ public class CheckCredenziali extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Non è stato possible verificare le credenziali");
 			return;
 		}
-		String percorso;
 		if(utente!= null) {
 			request.getSession().setAttribute("user", utente);
 			percorso = getServletContext().getContextPath() + "/GoToHomePage";
 			response.sendRedirect(percorso);
-		} 
+		}
 		else {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Username o password errati");
+			ctx.setVariable("errorMsg1", "Username o password errati");
 			percorso = "/index.html";
 			templateEngine.process(percorso, ctx, response.getWriter());
 		}

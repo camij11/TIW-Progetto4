@@ -45,13 +45,18 @@ public class GoToSuccessPage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		HttpSession sessione = request.getSession(false);
-		ctx.setVariable("errorMsg", "Tutto ok");
-		ctx.setVariable("ContoOriginePrima", (Conto)sessione.getAttribute("ContoOriginePrima"));
-		ctx.setVariable("ContoOrigineDopo", (Conto)sessione.getAttribute("ContoOrigineDopo"));
-		ctx.setVariable("ContoDestinazionePrima", (Conto)sessione.getAttribute("ContoDestinazionePrima"));
-		ctx.setVariable("ContoDestinazioneDopo", (Conto)sessione.getAttribute("ContoDestinazioneDopo"));
-		String percorso = "/WEB-INF/Successo.html";
-		templateEngine.process(percorso, ctx, response.getWriter());
+		if(sessione != null) {
+			ctx.setVariable("ContoOriginePrima", (Conto)sessione.getAttribute("ContoOriginePrima"));
+			ctx.setVariable("ContoOrigineDopo", (Conto)sessione.getAttribute("ContoOrigineDopo"));
+			ctx.setVariable("ContoDestinazionePrima", (Conto)sessione.getAttribute("ContoDestinazionePrima"));
+			ctx.setVariable("ContoDestinazioneDopo", (Conto)sessione.getAttribute("ContoDestinazioneDopo"));
+			String percorso = "/WEB-INF/Successo.html";
+			templateEngine.process(percorso, ctx, response.getWriter());
+		} else {
+			String percorso = "/Logout";
+			getServletContext().getRequestDispatcher(percorso).forward(request, response);
+		}
+		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

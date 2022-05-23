@@ -22,47 +22,24 @@ public class DAO_Trasferimento {
 		ArrayList<Trasferimento> risultato = new ArrayList<Trasferimento>();
 		
 		String query = "SELECT * FROM Trasferimento WHERE IDContoOrigine = ? or IDContoDestinazione = ? ORDER BY Data DESC";
-		ResultSet result = null;
-		PreparedStatement statement = null;
-		try {
-			statement = connessione.prepareStatement(query);
+		try (PreparedStatement statement = connessione.prepareStatement(query);){
 			statement.setInt(1, IDConto);
 			statement.setInt(2, IDConto);
-			result = statement.executeQuery();
-			
-			while (result.next()) {
-				Trasferimento t = new Trasferimento();
-				t.setIDTrasferimento(result.getInt("IDTrasferimento"));
-				t.setData(result.getDate("Data"));
-				t.setImporto(result.getInt("Importo"));
-				t.setCausale(result.getString("Causale"));
-				t.setIDContoOrigine(result.getInt("IDContoOrigine"));
-				t.setIDContoDestinazione(result.getInt("IDContoDestinazione"));
-				
-				risultato.add(t);
-			}
-		} catch (SQLException e) {
-			throw e;
-
-		} finally {
-			try {
-				if (result != null) {
-					result.close();
+			try(ResultSet result = statement.executeQuery();){
+				while (result.next()) {
+					Trasferimento t = new Trasferimento();
+					t.setIDTrasferimento(result.getInt("IDTrasferimento"));
+					t.setData(result.getDate("Data"));
+					t.setImporto(result.getInt("Importo"));
+					t.setCausale(result.getString("Causale"));
+					t.setIDContoOrigine(result.getInt("IDContoOrigine"));
+					t.setIDContoDestinazione(result.getInt("IDContoDestinazione"));
+					risultato.add(t);
 				}
-			} catch (SQLException e1) {
-				throw e1;
-			}
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException e2) {
-				throw e2;
 			}
 		}
-
 		return risultato;
-	}
+	} 	
 	
 	public int eseguiTransazione(int IDContoOrigine, int IDContoDestinazione, int importo, String causale) throws SQLException, Exception {
 		int risultato = 0;
@@ -79,27 +56,28 @@ public class DAO_Trasferimento {
 			statement.setString(3, causale);
 			statement.setInt(4, IDContoOrigine);
 			statement.setInt(5, IDContoDestinazione);
-			
 			risultato = statement.executeUpdate();
-			
-			Conto ContoOrigine = DAOConto.getContoByID(IDContoOrigine);
-			int importoOriginePrima = ContoOrigine.getSaldo();
-			ContoOrigine.setSaldo(importoOriginePrima - importo);
-			if(DAOConto.updateConto(ContoOrigine)==0) {
-				connessione.rollback();
-				throw new Exception("Impossibile eseguire la transazione");
+			if(risultato != 0) {
+				Conto ContoOrigine = DAOConto.getContoByID(IDContoOrigine);
+				int importoOriginePrima = ContoOrigine.getSaldo();
+				ContoOrigine.setSaldo(importoOriginePrima - importo);
+				if(DAOConto.updateConto(ContoOrigine)==0) {
+					connessione.rollback();
+					throw new Exception("Impossibile eseguire la transazione");
+				}
+				
+				Conto ContoDestinazione = DAOConto.getContoByID(IDContoDestinazione);
+				int importoDestinazioneDopo = ContoDestinazione.getSaldo();
+				ContoDestinazione.setSaldo(importoDestinazioneDopo + importo);
+				if(DAOConto.updateConto(ContoDestinazione)==0) {
+					connessione.rollback();
+					throw new Exception("Impossibile eseguire la transazione");
+				}
+				
+				connessione.commit();
+			} else {
+				throw new SQLException();
 			}
-			
-			Conto ContoDestinazione = DAOConto.getContoByID(IDContoDestinazione);
-			int importoDestinazioneDopo = ContoDestinazione.getSaldo();
-			ContoDestinazione.setSaldo(importoDestinazioneDopo + importo);
-			if(DAOConto.updateConto(ContoDestinazione)==0) {
-				connessione.rollback();
-				throw new Exception("Impossibile eseguire la transazione");
-			}
-			
-			connessione.commit();
-			
 		}catch (SQLException e1) {
 			connessione.rollback();
 			throw e1;

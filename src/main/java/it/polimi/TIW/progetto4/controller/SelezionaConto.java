@@ -50,12 +50,18 @@ public class SelezionaConto extends HttpServlet {
 		DAO_Conto DaoConto = new DAO_Conto(connection);
 		DAO_Trasferimento DaoTrasferimento = new DAO_Trasferimento(connection);
 		Conto conto;
+		String percorso;
 		Utente utente = (Utente)request.getSession().getAttribute("user");
 		if(utente!=null) {
 			try{
-				IDConto = Integer.parseInt(request.getParameter("conto"));
+				String IDContoStringa = request.getParameter("conto");
+				if(IDContoStringa == null || IDContoStringa.isEmpty()) {
+					throw new Exception("Il campo IDConto è vuoto o nullo");
+				} else {
+					IDConto = Integer.parseInt(IDContoStringa);
+				}
 			} catch(Exception e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Nessun conto selezionato");
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Selezione conto fallita. "+e.getMessage());
 				return;
 			}
 			
@@ -64,10 +70,10 @@ public class SelezionaConto extends HttpServlet {
 					conto = DaoConto.getContoByID(IDConto);
 				}
 				else {
-					throw new Exception("Utente in sessione non è proprietario del conto selezionato");
+					throw new Exception("L'utente in sessione non è proprietario del conto selezionato");
 				}
 			} catch(Exception e) {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare conto desiderato");
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Impossibile selezionare conto desiderato. "+e.getMessage());
 				return;
 			}
 			
@@ -80,7 +86,6 @@ public class SelezionaConto extends HttpServlet {
 				return;
 			}
 			
-			String percorso;
 			if(conto != null) {
 				percorso = "/WEB-INF/DettaglioConto.html";
 				ServletContext servletContext = getServletContext();
@@ -89,14 +94,11 @@ public class SelezionaConto extends HttpServlet {
 				ctx.setVariable("Trasferimenti", listaTrasferimenti);
 				templateEngine.process(percorso, ctx, response.getWriter());
 			} else {
-				percorso = "/WEB-INF/HomePage.html";
-				ServletContext servletContext = getServletContext();
-				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("ErrorMsg", "Conto inesistente");
-				templateEngine.process(percorso, ctx, response.getWriter());
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile selezionare il conto");
+				return;
 			}
 		}else {
-			String percorso = "/Logout";
+			percorso = "/Logout";
 			getServletContext().getRequestDispatcher(percorso).forward(request, response);
 		}
 		

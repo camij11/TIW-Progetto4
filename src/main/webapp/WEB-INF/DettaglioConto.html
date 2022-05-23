@@ -6,10 +6,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet"> 
 <link rel="stylesheet" href="../CSS/home.css" th:href="@{/CSS/home.css}">
 <meta charset="UTF-8">
-<meta http-equiv="cache-control" content="max-age=0" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="expires" content="Tue, 01 Jan 1990 12:00:00 GMT" />
 <title>Dettaglio Conto</title>
 </head>
 <body>
@@ -53,10 +49,10 @@
 		<h3>Vuoi ordinare un nuovo trasferimento?</h3>
 		<form class = "newform" action="CheckConto" method="post">
 		<div class = "allineamentodx">
-	   		Username destinatario: <input type="email" name="usernameDestinatario" required/> <br>
-	   		IDConto del destinatario: <input type="number" name="IDContoDestinazione" required/> <br>
-	   		Causale: <input type="text" name="causale" required/> <br>
-	   		Importo: <input type="number" name="importo" required/> <br>
+	   		Username destinatario: <input type="email" name="usernameDestinatario" placeholder="email destinatario" required/> <br>
+	   		IDConto del destinatario: <input type="number" name="IDContoDestinazione" placeholder="IDConto destinatario" required/> <br>
+	   		Causale: <input type="text" name="causale" placeholder="causale" required/> <br>
+	   		Importo: <input type="number" name="importo" placeholder="importo" required/> <br>
 	   		<input type="hidden" name="IDContoOrigine" th:value="${DettaglioConto.IDConto}"/>
 	   		</div>
 	   		<input type="submit" value="Invia"/>

@@ -45,7 +45,6 @@ public class GoToHomePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utente utente = (Utente)request.getSession().getAttribute("user");
-		//request.getSession().setMaxInactiveInterval(30);
 		DAO_Conto DaoConto = new DAO_Conto(connection);
 		List<Integer> ElencoConti;
 		if(utente!=null) {

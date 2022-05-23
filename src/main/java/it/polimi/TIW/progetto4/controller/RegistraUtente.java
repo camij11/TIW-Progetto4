@@ -50,6 +50,7 @@ public class RegistraUtente extends HttpServlet {
         String username = null;
         String password = null;
         String repeatpassword = null;
+        String percorso = null;
 	
 	try {
 		name = request.getParameter("name");
@@ -59,7 +60,7 @@ public class RegistraUtente extends HttpServlet {
 		repeatpassword = request.getParameter("repeatpassword");
 		
 		if(name == null || surname == null || username == null || password == null || repeatpassword == null || name.isEmpty() || surname.isEmpty() || username.isEmpty() || password.isEmpty() || repeatpassword.isEmpty()) {
-			throw new Exception("I campi username e password devono essere riempiti");
+			throw new Exception("Tutti i campi devono essere riempiti");
 		}
 		
 		if(!password.equals(repeatpassword)) { 
@@ -73,7 +74,7 @@ public class RegistraUtente extends HttpServlet {
 			}
 		
 		if(password.length()>20) {
-			throw new Exception("La password non può essere più lunga di 20 caratteri");
+			throw new Exception("La password deve essere lunga al massimo 20 caratteri");
 		}
 	}
 
@@ -81,7 +82,7 @@ public class RegistraUtente extends HttpServlet {
 	    ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("errorMsg", e.getMessage());
-		String percorso = "/WEB-INF/RegisterPage";
+		percorso = "/WEB-INF/RegisterPage";
 		templateEngine.process(percorso, ctx, response.getWriter());
 		return;
 	  }	
@@ -93,42 +94,38 @@ public class RegistraUtente extends HttpServlet {
 	try{
 		usernameEsistente = DaoUtente.checkUsername(name, surname, username, password);
 	} catch (Exception e) {
-		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Non è stato possibile accedere alla BD");
+		response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Non è stato possibile accedere alla base di dati");
 	}
 	if(usernameEsistente == null) {
 		try{
 			utente = DaoUtente.registraUtente(username, password, name, surname);
 			} catch (Exception e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Non è stato possibile accedere alla BD");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Non è stato possibile accedere alla base di dati");
 			};	
-	}
-	
-	String percorso;
-	int result;
-	
-	if(utente!= null) {
-		try {
-			result = DaoConto.addContoDefault(utente.getUsername());
-		} catch(Exception e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Non è stato possibile aggiungere un conto di default");
-		    return;
-		}
-		if(result == 1) {
-			String path = "/index.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("successMsg","Registrazione avvenuta con successo");
-			templateEngine.process(path, ctx, response.getWriter());
-		}
-	} 
-	else {
+	} else {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("errorMsg", "Username già in uso");
+		ctx.setVariable("errorMsg", "Username scelto non disponibile");
 		percorso = "/WEB-INF/RegisterPage";
 		templateEngine.process(percorso, ctx, response.getWriter());
 	    }
+	
+	if(utente != null) {
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("successMsg", "Registrazione avvenuta con successo");
+		percorso = "/index.html";
+		templateEngine.process(percorso, ctx, response.getWriter());
+	} else {
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("errorMsg", "Non è stato possibile registrare l'utente");
+		percorso = "/WEB-INF/RegisterPage";
+		templateEngine.process(percorso, ctx, response.getWriter());
 	}
+	
+	}
+	
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);

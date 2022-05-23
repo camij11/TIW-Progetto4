@@ -52,18 +52,23 @@ public class EseguiTransazione extends HttpServlet {
 		try {
 			contoOriginePrima = DAOConto.getContoByID(IDContoOrigine);
 			contoDestinazionePrima = DAOConto.getContoByID(IDContoDestinazione);
+			if(contoOriginePrima == null || contoDestinazionePrima == null) {
+				throw new Exception();
+			}
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti prima della transazione");
+			return;
+		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti prima della transazione");
 			return;
 		}
+		
 		int importo = Integer.parseInt(request.getParameter("importo"));
 		String causale = request.getParameter("causale");
 		try {
 			risultato = DAOTrasferimento.eseguiTransazione(IDContoOrigine, IDContoDestinazione, importo, causale); 
 		} catch(SQLException e) {
-			//e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile controllare la proprietà del conto");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile inserire la transazione");
 			return;
 		} catch(Exception e1) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile eseguire la transazione");
@@ -73,8 +78,13 @@ public class EseguiTransazione extends HttpServlet {
 		try {
 			contoOrigineDopo = DAOConto.getContoByID(IDContoOrigine);
 			contoDestinazioneDopo = DAOConto.getContoByID(IDContoDestinazione);
+			if(contoOrigineDopo == null || contoDestinazioneDopo == null) {
+				throw new Exception();
+			}
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti dopo la transazione");
+			return;
+		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossibile estrarre i conti dopo la transazione");
 			return;
 		}
@@ -95,6 +105,14 @@ public class EseguiTransazione extends HttpServlet {
 			ctx.setVariable("errorMsg", "L'esecuzione dell'operazione non è andata a buon fine");
 			percorso = "/WEB-INF/Fallimento.html";
 			templateEngine.process(percorso, ctx, response.getWriter());
+		}
+	}
+	
+	public void destroy() {
+		try {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
