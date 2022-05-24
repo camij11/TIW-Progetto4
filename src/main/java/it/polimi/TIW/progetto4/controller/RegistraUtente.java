@@ -106,6 +106,7 @@ public class RegistraUtente extends HttpServlet {
 		ctx.setVariable("errorMsg", "Username scelto non disponibile");
 		percorso = "/WEB-INF/RegisterPage";
 		templateEngine.process(percorso, ctx, response.getWriter());
+		return;
 	    }
 	
 	if(utente != null) {
@@ -114,12 +115,14 @@ public class RegistraUtente extends HttpServlet {
 		ctx.setVariable("successMsg", "Registrazione avvenuta con successo");
 		percorso = "/index.html";
 		templateEngine.process(percorso, ctx, response.getWriter());
+		return;
 	} else {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("errorMsg", "Non è stato possibile registrare l'utente");
 		percorso = "/WEB-INF/RegisterPage";
 		templateEngine.process(percorso, ctx, response.getWriter());
+		return;
 	}
 	
 	}
